@@ -22,10 +22,13 @@ public class MyCanvas extends JComponent implements MouseListener, MouseMotionLi
 	private boolean polylining;
 	private Point pointer;
 	private BufferedImage fractals;
+	protected Color color;
+	
 	public MyCanvas() {
 		shapes = new Vector<Shape>();
 		firstTime = true;
 		polyline = new Vector<Point>();
+		color = Color.BLUE;
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
@@ -35,6 +38,7 @@ public class MyCanvas extends JComponent implements MouseListener, MouseMotionLi
 		shapes.add(shape);
 		Graphics g = fractals.createGraphics();
 		shape.paint(g);
+		update(getGraphics());
 	}
 	@Override
 	public void paint(Graphics g) {
@@ -50,8 +54,7 @@ public class MyCanvas extends JComponent implements MouseListener, MouseMotionLi
 			fractals = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics g2 = fractals.createGraphics();
 		for(Shape shape : shapes) {
-			shape.doFractal();
-			shape.paint(g2);
+			shape.doFractal(g2);
 		}
 		update(getGraphics());
 	}
@@ -62,7 +65,7 @@ public class MyCanvas extends JComponent implements MouseListener, MouseMotionLi
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.drawImage(fractals, 0, 0, this);
 		if(polylining) {
-			g.setColor(Color.WHITE);
+			g.setColor(color);
 			int[] xPoints = new int[polyline.size() + 1];
 			int[] yPoints = new int[polyline.size() + 1];
 			for(int i = 0; i < polyline.size(); i++) {
@@ -83,10 +86,9 @@ public class MyCanvas extends JComponent implements MouseListener, MouseMotionLi
 		}
 		else {
 			polylining = false;
-			Shape shape = new Shape(Color.BLUE, new Vector<Point>(polyline));
+			Shape shape = new Shape(color, new Vector<Point>(polyline), this);
 			addShape(shape);
 			polyline.clear();
-			shape.paint(getGraphics());
 			
 		}
 		update(getGraphics());

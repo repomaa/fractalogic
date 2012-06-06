@@ -1,5 +1,7 @@
 package de.digitaladventures.fractalogic.logic;
 
+import java.math.BigDecimal;
+
 public class Point {
 	public double X;
 	public double Y;
