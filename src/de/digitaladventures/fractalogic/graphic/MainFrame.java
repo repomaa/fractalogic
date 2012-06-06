@@ -3,8 +3,12 @@ package de.digitaladventures.fractalogic.graphic;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import de.digitaladventures.fractalogic.logic.Point;
@@ -18,27 +22,52 @@ public class MainFrame extends JFrame {
 		canvas.setPreferredSize(new Dimension(600, 600));
 		panel.add(canvas);
 		setContentPane(panel);
+		setVisible(true);
+		createBufferStrategy(3);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setJMenuBar(createMenuBar());
 	}
 	
+	private JMenuBar createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenuItem doFractal = new JMenuItem("Do Fractal");
+		doFractal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.updateFractals();
+			}
+		});
+		JMenuItem clear = new JMenuItem("Clear");
+		clear.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.clear();
+			}
+		});
+		menuBar.add(doFractal);
+		menuBar.add(clear);
+		return menuBar;
+	}
+
 	public static void main(String[] args) {
 		MainFrame mainFrame = new MainFrame();
 		mainFrame.pack();
-		mainFrame.setVisible(true);
-		Shape shape = new Shape(Color.WHITE);
-		shape.addPoint(new Point(100, 100));
-		shape.addPoint(new Point(150, 150));
-		shape.addPoint(new Point(200, 100));
-		mainFrame.canvas.addShape(shape);
-		for(int i = 0; i < 10; i++) {
-			shape.doFractal();
-			mainFrame.canvas.paintComponent(mainFrame.getGraphics());
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		Shape shape = new Shape(Color.BLUE);
+//		shape.addPoint(new Point(100, 200));
+//		shape.addPoint(new Point(130, 260));
+//		shape.addPoint(new Point(200, 200));
+//		mainFrame.canvas.addShape(shape);
+//		for(int i = 0; i < 14; i++) {
+//			mainFrame.canvas.paint(mainFrame.getGraphics());
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			shape.doFractal();
+//		}
 	}
 }
