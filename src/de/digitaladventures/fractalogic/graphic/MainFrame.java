@@ -1,4 +1,4 @@
-package graphic;
+package de.digitaladventures.fractalogic.graphic;
 
 import java.awt.Canvas;
 import java.awt.Color;
